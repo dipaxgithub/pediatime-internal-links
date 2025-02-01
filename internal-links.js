@@ -1,7 +1,6 @@
-// Fixed version of the auto-linking script
-document.addEventListener("DOMContentLoaded", function () {
-  // Define keywords and their corresponding URLs
-  const links = {
+   window.onload = function () {    // Define keywords and their corresponding URLs
+
+      const internalLinks = {
     "Evaluation of Immunodeficiency":
       "https://www.pedia-time.com/2024/02/EvaluationImmunodeficiency.html",
     "Neutrophils": "https://www.pedia-time.com/2024/08/neutrophils.html",
@@ -63,86 +62,29 @@ document.addEventListener("DOMContentLoaded", function () {
       "https://www.pedia-time.com/2023/05/adverse-drugs-reactions.html",
   };
 
-  const maxLinksPerKeyword = 2;
-  const maxLinksPerParagraph = 1;
+    const seenKeywords = new Set(); // Track already linked keywords
 
-  function autoLinkContent(content) {
-    // Create a temporary element to safely parse HTML
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = content;
-
-    // Get text nodes only
-    const walk = document.createTreeWalker(
-      tempDiv,
-      NodeFilter.SHOW_TEXT,
-      null,
-      false
-    );
-
-    const keywordCounts = {};
-    let node;
-
-    while ((node = walk.nextNode())) {
-      if (node.parentNode.nodeName !== "A") {
-        // Skip if parent is already a link
-        for (const [keyword, url] of Object.entries(links)) {
-          const keywordLower = keyword.toLowerCase();
-          if (!keywordCounts[keywordLower]) {
-            keywordCounts[keywordLower] = 0;
-          }
-
-          const regex = new RegExp(
-            `\\b${keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`,
-            "gi"
-          );
-
-          let match;
-          let lastIndex = 0;
-          let newContent = "";
-
-          while ((match = regex.exec(node.textContent)) !== null) {
-            if (keywordCounts[keywordLower] < maxLinksPerKeyword) {
-              newContent += node.textContent.substring(lastIndex, match.index);
-              newContent += `<a href="${url}" target="_blank">${match[0]}</a>`;
-              lastIndex = regex.lastIndex;
-              keywordCounts[keywordLower]++;
+    function linkKeyword(text, keyword, url) {
+        const regex = new RegExp(`(^|\\s)(${keyword})(?=\\s|$)`, &quot;i&quot;); // Improved regex for multi-word match
+        return text.replace(regex, function (match, space, word) {
+            if (!seenKeywords.has(keyword.toLowerCase())) {
+                seenKeywords.add(keyword.toLowerCase());
+                return `${space}<a href='${url}' target='_blank'>${word}</a>`;
             }
-          }
-
-          if (newContent) {
-            newContent += node.textContent.substring(lastIndex);
-            const newNode = document.createElement("span");
-            newNode.innerHTML = newContent;
-            node.parentNode.replaceChild(newNode, node);
-          }
-        }
-      }
+            return match;
+        });
     }
 
-    return tempDiv.innerHTML;
-  }
-
-  function processBlogContent() {
-    const postContent = document.querySelectorAll(".post-body");
-
-    postContent.forEach(function (post) {
-      const paragraphs = post.children;
-      let linksAddedInParagraph = 0;
-
-      Array.from(paragraphs).forEach((paragraph) => {
-        if (paragraph.tagName === "P") {
-          let hasKeyword = Object.keys(links).some((keyword) =>
-            paragraph.textContent.toLowerCase().includes(keyword.toLowerCase())
-          );
-
-          if (hasKeyword && linksAddedInParagraph < maxLinksPerParagraph) {
-            paragraph.innerHTML = autoLinkContent(paragraph.innerHTML);
-            linksAddedInParagraph++;
-          }
+    // Process all paragraphs and divs containing text
+    document.querySelectorAll(&quot;p, div&quot;).forEach(paragraph =&gt; {
+        let paragraphText = paragraph.innerHTML;
+        for (let keyword in internalLinks) {
+            if (!seenKeywords.has(keyword.toLowerCase())) {
+                paragraphText = linkKeyword(paragraphText, keyword, internalLinks[keyword]);
+            }
         }
-      });
+        paragraph.innerHTML = paragraphText;
     });
-  }
+};
 
-  processBlogContent();
-});
+ 
