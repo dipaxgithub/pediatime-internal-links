@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "Juvenile Idiopathic Arthritis": "https://www.pedia-time.com/2023/12/juvenile-idiopathic-arthritis.html",
 "Ankylosing Spondylitis": "https://www.pedia-time.com/2023/12/juvenile-ankylosing-spondylitis.html",
 "Reactive Arthritis": "https://www.pedia-time.com/2023/12/reactive-arthritis.html",
-"Systemic Lupus Erythematosus": "https://www.pedia-time.com/2023/12/systemic-lupus-erythematosus.html",
+"systemic lupus erythematosus": "https://www.pedia-time.com/2023/12/systemic-lupus-erythematosus.html",
 "Juvenile Dermatomyositis": "https://www.pedia-time.com/2023/12/juvenile-dermatomyositis.html",
 "Scleroderma": "https://www.pedia-time.com/2023/12/scleroderma.html",
 "Behçet Disease": "https://www.pedia-time.com/2024/02/behcet-disease.html",
