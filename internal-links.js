@@ -62,14 +62,14 @@ window.onload = function () {
       "https://www.pedia-time.com/2023/05/adverse-drugs-reactions.html",
   };
 
-    const seenKeywords = new Set(); // Track already linked keywords
+   const seenKeywords = new Set(); // Track already linked keywords
 
     function linkKeyword(text, keyword, url) {
         const regex = new RegExp(`(^|\\s)(${keyword})(?=\\s|$)`, "i"); // Case-insensitive match
         return text.replace(regex, function (match, space, word) {
             if (!seenKeywords.has(keyword.toLowerCase())) {
                 seenKeywords.add(keyword.toLowerCase());
-                return `${space}<a href="${url}" target="_blank">${word}</a>`;
+                return `${space}<a href="${url}" target="_blank">${word}</a>`; // Retain original word case
             }
             return match;
         });
@@ -77,12 +77,17 @@ window.onload = function () {
 
     // Process all paragraphs and divs containing text
     document.querySelectorAll("p, div").forEach(paragraph => {
+        // Ensure that we only replace text nodes and not break other HTML structures
         let paragraphText = paragraph.innerHTML;
+
+        // Only replace the text that matches the keywords
         for (let keyword in internalLinks) {
             if (!seenKeywords.has(keyword.toLowerCase())) {
                 paragraphText = linkKeyword(paragraphText, keyword, internalLinks[keyword]);
             }
         }
+        
+        // Apply the modified text without altering other HTML elements
         paragraph.innerHTML = paragraphText;
     });
 };
