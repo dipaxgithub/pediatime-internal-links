@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Define keywords and their corresponding URLs
     var links = {
-        "Takayasu Arteritis": "https://www.pedia-time.com/2024/02/takayasu-arteritis.html",
-        "Evaluation of Immunodeficiency": "https://www.pedia-time.com/2024/02/EvaluationImmunodeficiency.html",
+           "Evaluation of Immunodeficiency": "https://www.pedia-time.com/2024/02/EvaluationImmunodeficiency.html",
         "Neutrophils": "https://www.pedia-time.com/2024/08/neutrophils.html",
   "Leukocytes": "https://www.pedia-time.com/2024/08/lymphocytes.html",
 "Eosinophils": "https://www.pedia-time.com/2024/08/eosinophils.html",
@@ -19,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "Juvenile Idiopathic Arthritis": "https://www.pedia-time.com/2023/12/juvenile-idiopathic-arthritis.html",
 "Ankylosing Spondylitis": "https://www.pedia-time.com/2023/12/juvenile-ankylosing-spondylitis.html",
 "Reactive Arthritis": "https://www.pedia-time.com/2023/12/reactive-arthritis.html",
-"SLE": "https://www.pedia-time.com/2023/12/systemic-lupus-erythematosus.html",
+"Systemic Lupus Erythematosus": "https://www.pedia-time.com/2023/12/systemic-lupus-erythematosus.html",
 "Juvenile Dermatomyositis": "https://www.pedia-time.com/2023/12/juvenile-dermatomyositis.html",
 "Scleroderma": "https://www.pedia-time.com/2023/12/scleroderma.html",
 "Behçet Disease": "https://www.pedia-time.com/2024/02/behcet-disease.html",
@@ -34,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 "Allergic Rhinitis": "https://www.pedia-time.com/2024/02/allergic-rhinitis.html",
-"Childhood Asthma": "https://www.pedia-time.com/2023/05/asthma.html",
+"Asthma": "https://www.pedia-time.com/2023/05/asthma.html",
 "Atopic Dermatitis": "https://www.pedia-time.com/2024/03/atopic-dermatitis.html",
 "Insect Allergy": "https://www.pedia-time.com/2023/05/insect-allergy.html",
 "Urticaria": "https://www.pedia-time.com/2023/05/urticaria.html",
