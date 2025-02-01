@@ -49,29 +49,30 @@ document.addEventListener("DOMContentLoaded", function () {
     var maxLinksPerParagraph = 1; // Only one link per paragraph for better readability
 
     function autoLinkContent(content) {
-        let keywordCounts = {}; // Track the number of times each keyword is linked
+    let keywordCounts = {}; // Track the number of times each keyword is linked
 
-        for (var keyword in links) {
-            var url = links[keyword];
+    for (var keyword in links) {
+        var url = links[keyword];
 
-            // Ensure the keyword is linked only a limited number of times
-            if (!keywordCounts[keyword]) {
-                keywordCounts[keyword] = 0;
-            }
-
-            // Use regex to find keyword occurrences, avoiding existing <a> tags
-            var regex = new RegExp("(?!<a[^>]*?>)\\b(" + keyword + ")\\b(?![^<]*?</a>)", "gi");
-
-            content = content.replace(regex, function (match) {
-                if (keywordCounts[keyword] < maxLinksPerKeyword) {
-                    keywordCounts[keyword]++;
-                    return `<a href="${url}" target="_blank">${match}</a>`;
-                }
-                return match;
-            });
+        // Ensure the keyword is linked only a limited number of times
+        if (!keywordCounts[keyword]) {
+            keywordCounts[keyword] = 0;
         }
-        return content;
+
+        // Create a case-insensitive regex while preserving original text
+        var regex = new RegExp("\\b" + keyword + "\\b", "gi");
+
+        content = content.replace(regex, function (match) {
+            if (keywordCounts[keyword] < maxLinksPerKeyword) {
+                keywordCounts[keyword]++;
+                return `<a href="${url}" target="_blank">${match}</a>`; // Keeps original text case
+            }
+            return match;
+        });
     }
+    return content;
+}
+
 
     function processBlogContent() {
         var postContent = document.querySelectorAll(".post-body"); // Adjust selector if needed
