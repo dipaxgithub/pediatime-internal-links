@@ -45,56 +45,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
     };
 
-    var maxLinksPerKeyword = 2; // Limit how many times a keyword gets linked per page
-    var maxLinksPerParagraph = 1; // Only one link per paragraph for better readability
+    var maxLinksPerKeyword = 2;
+    var maxLinksPerParagraph = 1;
 
     function autoLinkContent(content) {
-    let keywordCounts = {}; // Track the number of times each keyword is linked
-
-    for (var keyword in links) {
-        var url = links[keyword];
-
-        // Ensure the keyword is linked only a limited number of times
-        if (!keywordCounts[keyword]) {
-            keywordCounts[keyword] = 0;
-        }
-
-        // Create a case-insensitive regex while preserving original text
-        var regex = new RegExp("\\b" + keyword + "\\b", "gi");
-
-        content = content.replace(regex, function (match) {
-            if (keywordCounts[keyword] < maxLinksPerKeyword) {
-                keywordCounts[keyword]++;
-                return `<a href="${url}" target="_blank">${match}</a>`; // Keeps original text case
+        let keywordCounts = {};
+        for (var keyword in links) {
+            var url = links[keyword];
+            var keywordLower = keyword.toLowerCase();
+            if (!keywordCounts[keywordLower]) {
+                keywordCounts[keywordLower] = 0;
             }
-            return match;
-        });
+            
+            var regex = new RegExp("\\b" + keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + "\\b", "gi");
+            
+            content = content.replace(regex, function (match) {
+                if (keywordCounts[keywordLower] < maxLinksPerKeyword) {
+                    keywordCounts[keywordLower]++;
+                    return `<a href="${url}" target="_blank">${match}</a>`;
+                }
+                return match;
+            });
+        }
+        return content;
     }
-    return content;
-}
-
 
     function processBlogContent() {
-        var postContent = document.querySelectorAll(".post-body"); // Adjust selector if needed
+        var postContent = document.querySelectorAll(".post-body");
 
         postContent.forEach(function (post) {
-            let paragraphs = post.innerHTML.split(/(<p>.*?<\/p>)/g); // Splitting into paragraphs
+            let paragraphs = post.innerHTML.split(/(<p>.*?<\/p>)/gi);
             let modifiedContent = "";
+            let linksAddedInParagraph = 0;
 
             paragraphs.forEach(paragraph => {
                 if (paragraph.includes("<p>")) {
                     let keywordInParagraph = false;
-
                     for (var keyword in links) {
-                        if (paragraph.includes(keyword)) {
+                        if (paragraph.toLowerCase().includes(keyword.toLowerCase())) {
                             keywordInParagraph = true;
                             break;
                         }
                     }
-
-                    if (keywordInParagraph && maxLinksPerParagraph > 0) {
+                    
+                    if (keywordInParagraph && linksAddedInParagraph < maxLinksPerParagraph) {
                         paragraph = autoLinkContent(paragraph);
-                        maxLinksPerParagraph--;
+                        linksAddedInParagraph++;
                     }
                 }
                 modifiedContent += paragraph;
